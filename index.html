@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Branson MO Map Project</title>
+    <link rel="stylesheet" href="css/main.css">
+    <!--<link rel="stylesheet" media="(max-width: 670px)" href="css/responsive.css">-->
+</head>
+<body>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/lib/knockout-3.3.0.js"></script>
+    <script async type="text/javascript" src="js/script.js"></script>
+
+<div id="map"> </div>
+
+<div id="searchContainer">
+
+
+</div>
+
+
+<!-- This is a *view* - HTML markup that defines the appearance of your UI -->
+
+<div class='liveExample'> 
+    
+    <h2>People</h2>
+    <ul data-bind="foreach: people">
+        <li>
+            <div>
+                <span data-bind="text: name"> </span> has <span data-bind='text: children().length'>&nbsp;</span> children:
+                <a href='#' data-bind='click: addChild '>Add child</a>
+                <span class='renderTime' data-bind='visible: $root.showRenderTimes'>
+                    (person rendered at <span data-bind='text: new Date().getSeconds()' > </span>)
+                </span>
+            </div>
+            <ul data-bind="foreach: children">
+                <li>
+                    <span data-bind="text: $data"> </span>
+                    <span class='renderTime' data-bind='visible: $root.showRenderTimes'>
+                        (child rendered at <span data-bind='text: new Date().getSeconds()' > </span>)
+                    </span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <label><input data-bind='checked: showRenderTimes' type='checkbox' /> Show render times</label> 
+    
+</div>
+
+</body>
+</html>
