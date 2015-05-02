@@ -7,3 +7,21 @@ html, body {
 	height:100%;
 	margin:0;
 }
+
+#container {
+    position: absolute;
+    z-index: 3; 
+}
+
+#search-nav {
+    width: 280px;
+    max-height: 549px;
+    background-color: rgba(256,256,256,.9);
+    border: solid 2px orange;
+    overflow: hidden;
+}
+
+.container{
+	position: absolute;
+    z-index: 3; 
+}

@@ -106,30 +106,40 @@ var destinations = [
 
 function initialize() {
   var mapProp = {
-    center:new google.maps.LatLng(36.643673,-93.218514),
-    zoom:12,
-    mapTypeId:google.maps.MapTypeId.ROADMAP
-  };
-  var map=new google.maps.Map(document.getElementById("map"), mapProp);
+        center:new google.maps.LatLng(36.646402,-93.287108),
+        zoom:13,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+    };
+    var map=new google.maps.Map(document.getElementById("map"), mapProp);
 
-var markerOptions = {
-    position: new google.maps.LatLng(36.643673,-93.218514),
-    animation:google.maps.Animation.BOUNCE
-};
-var marker = new google.maps.Marker(markerOptions);
-marker.setMap(map);
+    
 
-var point = new google.maps.LatLng(36.670464,-93.337082);  // lat long on silver $ testing
-var mark = new google.maps.Marker({
-    position:point,
-    map:map,
-    title:'Silver Dollar City',
-    //icon:'img/fun.png',
-    //infowindow
-})
 
+
+
+    function dropMarkers (){
+        for(i=0; i<destinations.length;i++){          
+            var infowindow = new google.maps.InfoWindow({
+                content:"Hello test"
+            });
+            var point = new google.maps.LatLng(destinations[i].lat,destinations[i].lng);  
+            var marker = new google.maps.Marker({
+                position:point,
+                map: map,
+                title: destinations[i].title,
+            });
+
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.open(map,marker);
+                console.log(infowindow);
+            });
+        }
+    }
+    dropMarkers();
 }
 google.maps.event.addDomListener(window, 'load', initialize);
+
+
 
 
 
@@ -156,3 +166,6 @@ var viewModel = {
 };
  
 ko.applyBindings(viewModel);
+
+
+
