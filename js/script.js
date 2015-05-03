@@ -6,7 +6,7 @@ var destinations = [
     lng: -93.337082,
     streetAddress: "399 Silver Dollar City Parkway",
     cityAddress: "Branson, MO 65616",
-    url: "http://www.bransonsilverdollarcity.com/",
+    url: "www.bransonsilverdollarcity.com/",
     type: "attraction",
     id: "nav0",
     visible: ko.observable(true),
@@ -17,7 +17,7 @@ var destinations = [
     lng: -93.287108,
     streetAddress: "3609 West Highway 76",
     cityAddress: "Branson, MO 65616",
-    url: "http://www.worldslargesttoymuseum.com/",
+    url: "www.worldslargesttoymuseum.com/",
     type: "attraction",
     id: "nav1",
     visible: ko.observable(true),
@@ -40,7 +40,7 @@ var destinations = [
     streetAddress: "2320 MO-76",
     cityAddress: "Branson, MO 65616",
     type : "attraction",
-    url: "http://www.ridetheducks.com/",
+    url: "www.ridetheducks.com/",
     id: "nav3",
     visible: ko.observable(true),
     },
@@ -51,7 +51,7 @@ var destinations = [
     streetAddress: "3617 W 76 Country Blvd",
     cityAddress: "Branson, MO 65616",
     type: "attraction",
-    url: "http://www.bransonworld.com/branson-attractions/tickets/branson-s-dinosaur-museum.html",
+    url: "www.bransonworld.com/branson-attractions/tickets/branson-s-dinosaur-museum.html",
     id: "nav4",
     visible: ko.observable(true),
     },
@@ -62,7 +62,7 @@ var destinations = [
     streetAddress: "1386 MO-376",
     cityAddress: "Branson, MO 65616",
     type: "food",
-    url: "http://www.steaknshake.com/locations/24123-steak-n-shake",
+    url: "www.steaknshake.com/locations/24123-steak-n-shake",
     id: "nav5",
     visible: ko.observable(true),
     },
@@ -73,7 +73,7 @@ var destinations = [
     streetAddress: "1946 W 76 Country Blvd",
     cityAddress: "Branson, MO 65616",
     type: "food",
-    url: "http://www.urbanspoon.com/r/98/1702373/restaurant/The-Burger-Shack-Branson",
+    url: "www.urbanspoon.com/r/98/1702373/restaurant/The-Burger-Shack-Branson",
     id: "nav6",
     visible: ko.observable(true),
     },
@@ -84,7 +84,7 @@ var destinations = [
     streetAddress: "3559 Shepherd of the Hills Expy",
     cityAddress: "Branson, MO 65616",
     type: "food",
-    url: "http://www.redlobster.com/",
+    url: "www.redlobster.com/",
     id: "nav7",
     visible: ko.observable(true),
     },
@@ -95,7 +95,7 @@ var destinations = [
     streetAddress: "963 MO-165",
     cityAddress: "Branson, MO 65616",
     type: "food",
-    url: "http://dannasbbq.com/",
+    url: "dannasbbq.com/",
     id: "nav8",
     visible: ko.observable(true),
     }   
@@ -112,15 +112,11 @@ function initialize() {
     };
     var map=new google.maps.Map(document.getElementById("map"), mapProp);
 
-    
-
-
-
-
     function dropMarkers (){
-        for(i=0; i<destinations.length;i++){          
+        for(i=0; i<destinations.length;i++){ 
+
             var infowindow = new google.maps.InfoWindow({
-                content:"Hello test"
+                content: destinations[i].title+destinations[i].type  
             });
             var point = new google.maps.LatLng(destinations[i].lat,destinations[i].lng);  
             var marker = new google.maps.Marker({
@@ -128,14 +124,28 @@ function initialize() {
                 map: map,
                 title: destinations[i].title,
             });
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function(){
+                    var infoString = '<strong>'+destinations[i].title+'</strong>'+'<br>'+destinations[i].streetAddress+'<br>'+
+                    destinations[i].cityAddress+'<br><a href="http://'+destinations[i].url+'"target="_blank">'+destinations[i].url+'</a>';
 
-            google.maps.event.addListener(marker, 'click', function() {
-                infowindow.open(map,marker);
-                console.log(infowindow);
-            });
+                    infowindow.setContent(infoString);
+                    infowindow.open(map,marker);
+                    map.setCenter(marker.getPosition());
+                    map.setZoom(16);
+                }
+            })(marker,i));
         }
     }
     dropMarkers();
+
+    function mapReset(){
+        map.setZoom(13);
+        map.setCenter(mapProp.center);
+    }
+    $("#reset").click(function() {
+        mapReset();
+    });
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 
