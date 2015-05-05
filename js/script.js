@@ -95,7 +95,7 @@ var destinations = [
     streetAddress: "963 MO-165",
     cityAddress: "Branson, MO 65616",
     type: "food",
-    url: "dannasbbq.com/",
+    url: "dannasbbq.com",
     id: "nav8",
     visible: ko.observable(true),
     }   
@@ -103,7 +103,6 @@ var destinations = [
 
 
 // View map
-
 function initialize() {
   var mapProp = {
         center:new google.maps.LatLng(36.646402,-93.287108),
@@ -111,7 +110,7 @@ function initialize() {
         mapTypeId:google.maps.MapTypeId.ROADMAP
     };
     var map=new google.maps.Map(document.getElementById("map"), mapProp);
-
+    // add the Markers for all "destinations"
     function dropMarkers (){
         for(i=0; i<destinations.length;i++){ 
 
@@ -122,11 +121,14 @@ function initialize() {
             var marker = new google.maps.Marker({
                 position:point,
                 map: map,
-                title: destinations[i].title,
+                title: destinations[i].title,                
             });
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function(){
-                    var infoString = '<strong>'+destinations[i].title+'</strong>'+'<br>'+destinations[i].streetAddress+'<br>'+
+                    var googlePicUrl = '<img src="https://maps.googleapis.com/maps/api/streetview?size=200x100&location=';
+                    var googlePic = googlePicUrl+destinations[i].lat+','+destinations[i].lng+'"alt="Google Pic of'+destinations[i].title+'"><br>';
+                    //console.log(googlePic);   ***** NEED TO FIX all images**********
+                    var infoString =  '<p>'+googlePic+'</p>'+'<strong>'+destinations[i].title+'</strong>'+'<br>'+destinations[i].streetAddress+'<br>'+
                     destinations[i].cityAddress+'<br><a href="http://'+destinations[i].url+'"target="_blank">'+destinations[i].url+'</a>';
 
                     infowindow.setContent(infoString);
@@ -138,11 +140,12 @@ function initialize() {
         }
     }
     dropMarkers();
-
+    //reset the map view
     function mapReset(){
         map.setZoom(13);
         map.setCenter(mapProp.center);
     }
+    
     $("#reset").click(function() {
         mapReset();
     });
@@ -152,30 +155,39 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 
+//var viewModel = {
+//    destinations: ko.observableArray(destinations)
+//    query: ko.observable('')
+//    search: function(value) {
+    // remove all the current beers, which removes them from the view
+ //   viewModel.destinations.removeAll();
 
-//***** KO testing
-// This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
-// Define a "Person" class that tracks its own name and children, and has a method to add a new child
-var Person = function(name, children) {
-    this.name = name;
-    this.children = ko.observableArray(children);
- 
-    this.addChild = function() {
-        this.children.push("New child");
-    }.bind(this);
-}
- 
-// The view model is an abstract description of the state of the UI, but without any knowledge of the UI technology (HTML)
+//    for(var x in destinations) {
+//      if(beers[x].name.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+//        viewModel.destinations.push(destinations[x]);
+//      }
+//    }
+//  }
+//};
+
+//ko.applyBindings(viewModel);
+//viewModel.query.subscribe(viewModel.search);
+
+
+
+
 var viewModel = {
-    people: [
-        new Person("Annabelle", ["Arnie", "Anders", "Apple"]),
-        new Person("Bertie", ["Boutros-Boutros", "Brianna", "Barbie", "Bee-bop"]),
-        new Person("Charles", ["Cayenne", "Cleopatra"])
-        ],
-    showRenderTimes: ko.observable(false)
+    query: ko.observable(''),
 };
- 
+
+viewModel.destinations= ko.dependentObservable(function() {
+    var self = this;
+    var search = self.query().toLowerCase();
+    return ko.utils.arrayFilter(destinations, function(marker) {
+
+            return marker.visible(true);
+
+    });       
+}, viewModel);
+
 ko.applyBindings(viewModel);
-
-
-

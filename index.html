@@ -10,77 +10,100 @@
 </head>
 <body>
 
+  <style>
+    * {box-sizing:border-box;}
+    *:visited {color: #7D7D7D}
+    body {background-color: #CCC; color: #7D7D7D;}
+    html, body, #map {width: 100%; height: 100%; z-index: 1; position: absolute; margin: 0;}
+    p {font-size: 12px; margin: 5px 0;}
+    strong {font-size: 14px;}
+    ul {list-style-type: none; padding-left: 0; margin-bottom: 0;}
+    li {font-family: Helvetica, sans-serif; padding: 20px 0 15px 15px;}
+    li:hover {background-color: #7D7D7D; color: white;}
+    a {text-decoration: none; color: #7D7D7D;}
+    hr { margin: 10px 0 0 0; color: orange; border-color: orange;}
+  </style>
 
-<div id="map"> </div>
-
-    <div class="reset-container">
-        <button id="reset">Reset Map Zoom</button>
-        </div>
-
-<div class='liveExample'> 
-    
-    <h2>People</h2>
-    <div id="searchContainer">
-    <ul data-bind="foreach: people">
-        <li>
-            <div>
-                <span data-bind="text: name"> </span> has <span data-bind='text: children().length'>&nbsp;</span> children:
-                <a href='#' data-bind='click: addChild '>Add child</a>
-                <span class='renderTime' data-bind='visible: $root.showRenderTimes'>
-                    (person rendered at <span data-bind='text: new Date().getSeconds()' > </span>)
-                </span>
-            </div>
-            <ul data-bind="foreach: children">
-                <li>
-                    <span data-bind="text: $data"> </span>
-                    <span class='renderTime' data-bind='visible: $root.showRenderTimes'>
-                        (child rendered at <span data-bind='text: new Date().getSeconds()' > </span>)
-                    </span>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>
-    <label><input data-bind='checked: showRenderTimes' type='checkbox' /> Show render times</label> 
-    
-</div>
-
-<!-- This is a *view* - HTML markup that defines the appearance of your UI
-
-
-
-
-
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <h1 class="title-super">Orange Udacity Mug</h1>
-        </div>
+  <div id="map"> </div>
+  <div class="destinations-container" >
+    <div id="search-window">    
+      <input id="search" placeholder="Search…" type="input" data-bind="textInput: query, valueUpdate: 'keydown'" autocomplete="off"></input>
+      <div id="scroller">
+        <ul data-bind="template: {name: 'marker', foreach:destinations}">
+        </ul>
       </div>
-      <div class="row">
-        <div class="col-md-5">          
-          <div class="boxed">
-            <h2 class="text-subtitle">Main Features</h2>
-            <ul>
-              <li>Holds your favorite drink</li>
-              <li>Energizing color</li>
-              <li>Reminds you to learn</li>
-            </ul>
-          </div>
-        </div>      
-        <div class="col-md-7">
-          <h2 class="text-subtitle">A Good Way to Start a Day</h2>
-          <p>Bacon ipsum dolor sit amet shoulder drumstick spare ribs shank, magna in sirloin. Turducken dolore tempor irure tenderloin pork belly shankle. Excepteur in strip steak pork chop voluptate tongue, hamburger nostrud kevin enim nulla ut cow incididunt. Do pancetta swine hamburger incididunt in excepteur irure pig labore est venison dolor ex adipisicing. Labore capicola veniam, commodo corned beef ut non rump swine pork chop exercitation ball tip ham deserunt.</p><p>Ad tri-tip short loin anim beef ribs eu ball tip velit deserunt frankfurter sunt nisi filet mignon. Pork loin quis ham hock mollit cupidatat. Id ground round chuck jerky meatball laborum frankfurter short loin in biltong t-bone doner ea irure. Culpa ex ut id. Nostrud t-bone bresaola pariatur qui tri-tip pork chop, ribeye irure velit pork et in dolore.</p><p>Bacon in sunt dolor fatback excepteur turkey chuck velit proident frankfurter quis. Nisi shank sirloin sed tenderloin. Magna short ribs kielbasa biltong minim. In esse t- bone est tail kielbasa dolor ullamco tongue mollit sint sirloin chuck venison anim. Short ribs dolore adipisicing, bresaola venison cupidatat short loin turducken biltong leberkas andouille elit ad in occaecat. Ground round pariatur cupidatat ham hock magna tempor ea jowl duis.</p>
+      <script type="text/html" id="marker">
+        <div data-bind="visible: visible">
+          <a href="#" data-bind="attr: {id: id}">
+            <li>
+              <strong data-bind="text: title"></strong>
+              <p data-bind="text: streetAddress"></p>
+              <p data-bind="text: cityAddress"></p> 
+            </li>
+          </a>
         </div>
-      </div>
+      </script>   
     </div>
+  </div>
+  <div class="reset-container">
+    <button id="reset">Reset Map Zoom</button>
+  </div>
 
-
- -->
-    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-    <script type="text/javascript" src="js/lib/knockout-3.3.0.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>  
+  <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="js/lib/knockout-3.3.0.js"></script>
+  <script type="text/javascript" src="js/script.js"></script>  
 
 </body>
 </html>
+
+
+
+<!--
+
+  <div id="map"> </div>
+  <div class="destinations-container" >
+    <div id="search-window">    
+      <input id="search" placeholder="Search…" type="input" data-bind="textInput: query, valueUpdate: 'keydown'" autocomplete="off"></input>
+      <div id="scroller">
+        <ul data-bind="template: {name: 'marker', foreach:destinations}">
+        </ul>
+      </div>
+      <script type="text/html" id="marker">
+        <div data-bind="visible: visible">
+          <a href="#" data-bind="attr: {id: id}">
+            <li>
+              <strong data-bind="text: title"></strong>
+              <p data-bind="text: streetAddress"></p>
+              <p data-bind="text: cityAddress"></p> 
+            </li>
+          </a>
+        </div>
+      </script>   
+    </div>
+  </div>
+  <div class="reset-container">
+    <button id="reset">Reset Map Zoom</button>
+  </div>
+
+
+
+
+  <div id="map"> </div>
+  <div class="destinations-container" >
+    <div id="search-window">    
+      <input id="search" placeholder="search…" type="search" data-bind="value: query, valueUpdate:'keyup'" autocomplete="off"></input>
+      <div id="scroller"></div>
+        <ul data-bind="template: {name: 'destination', foreach:destinations}"></ul>
+      
+      <script type="text/html" id="destination">
+
+
+            <li>
+              <strong data-bind="text: title"></strong>
+              <span data-bind="text: streetAddress"></span>
+              <span data-bind="text: cityAddress"></span> 
+            </li>
+
+      </script> 
+-->
