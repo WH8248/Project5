@@ -10,6 +10,7 @@ var destinations = [
     type: "attraction",
     id: "nav0",
     visible: ko.observable(true),
+    searchable: true
     },
     {   
     title: "World's Largest Toy Museum",
@@ -21,6 +22,7 @@ var destinations = [
     type: "attraction",
     id: "nav1",
     visible: ko.observable(true),
+    searchable: true
     },
     {   
     title: "French Quarter Resort",
@@ -32,6 +34,7 @@ var destinations = [
     type: "homeBase",
     id: "nav2",
     visible: ko.observable(true),
+    searchable: true
     },
     {   
     title: "Ride The Ducks Branson",
@@ -43,6 +46,7 @@ var destinations = [
     url: "www.ridetheducks.com/",
     id: "nav3",
     visible: ko.observable(true),
+    searchable: true
     },
     {
     title: "The Dinosaur Museum",
@@ -54,6 +58,7 @@ var destinations = [
     url: "www.bransonworld.com/branson-attractions/tickets/branson-s-dinosaur-museum.html",
     id: "nav4",
     visible: ko.observable(true),
+    searchable: true
     },
     {   
     title: "Steak 'n Shake",
@@ -65,6 +70,7 @@ var destinations = [
     url: "www.steaknshake.com/locations/24123-steak-n-shake",
     id: "nav5",
     visible: ko.observable(true),
+    searchable: true
     },
     {
     title: "Burger Shack",
@@ -76,6 +82,7 @@ var destinations = [
     url: "www.urbanspoon.com/r/98/1702373/restaurant/The-Burger-Shack-Branson",
     id: "nav6",
     visible: ko.observable(true),
+    searchable: true
     },
     {
     title: "Red Lobster",
@@ -87,6 +94,7 @@ var destinations = [
     url: "www.redlobster.com/",
     id: "nav7",
     visible: ko.observable(true),
+    searchable: true
     },
     {
     title: "Dannas BBQ",
@@ -98,6 +106,7 @@ var destinations = [
     url: "dannasbbq.com",
     id: "nav8",
     visible: ko.observable(true),
+    searchable: true
     }   
 ];
 
@@ -110,7 +119,7 @@ function initialize() {
         mapTypeId:google.maps.MapTypeId.ROADMAP
     };
     var map=new google.maps.Map(document.getElementById("map"), mapProp);
-    // add the Markers for all "destinations"
+    // add the Markers for all "destinations" to the map
     function dropMarkers (){
         for(i=0; i<destinations.length;i++){ 
 
@@ -123,8 +132,29 @@ function initialize() {
                 map: map,
                 title: destinations[i].title,                
             });
+                    
+            
+            //When a marker is clicked the infoview opens and zooms in on the location in the map
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function(){
+
+                    var googlePicUrl = '<img src="https://maps.googleapis.com/maps/api/streetview?size=200x100&location=';
+                    var googlePic = googlePicUrl+destinations[i].lat+','+destinations[i].lng+'"alt="Google Pic of'+destinations[i].title+'"><br>';
+                    //console.log(googlePic);   ***** NEED TO FIX all images**********
+                    var infoString =  '<p>'+googlePic+'</p>'+'<strong>'+destinations[i].title+'</strong>'+'<br>'+destinations[i].streetAddress+'<br>'+
+                    destinations[i].cityAddress+'<br><a href="http://'+destinations[i].url+'"target="_blank">'+destinations[i].url+'</a>';
+                    
+                    infowindow.setContent(infoString);
+                    infowindow.open(map,marker);
+                    map.setCenter(marker.getPosition());
+                    map.setZoom(16);
+                }
+            })(marker,i));
+            //When a destination is selected in the list the infoview opens and zooms in on the location in the map
+            var searchList = $('#nav' + i);
+            searchList.click((function(marker,i){
+                return function() {
+
                     var googlePicUrl = '<img src="https://maps.googleapis.com/maps/api/streetview?size=200x100&location=';
                     var googlePic = googlePicUrl+destinations[i].lat+','+destinations[i].lng+'"alt="Google Pic of'+destinations[i].title+'"><br>';
                     //console.log(googlePic);   ***** NEED TO FIX all images**********
@@ -135,11 +165,12 @@ function initialize() {
                     infowindow.open(map,marker);
                     map.setCenter(marker.getPosition());
                     map.setZoom(16);
-                }
+                };
             })(marker,i));
         }
     }
     dropMarkers();
+
     //reset the map view
     function mapReset(){
         map.setZoom(13);
@@ -153,6 +184,24 @@ function initialize() {
 google.maps.event.addDomListener(window, 'load', initialize);
 
 
+var viewModel = {
+    query: ko.observable(''),
+};
+//searches the list of destinations
+viewModel.destinations = ko.dependentObservable(function() {
+    var self = this;
+    var search = self.query().toLowerCase();
+    return ko.utils.arrayFilter(destinations, function(marker) {
+    if (marker.title.toLowerCase().indexOf(search) >= 0) {
+            marker.searchable = true;
+            return marker.visible(true);
+        } else {
+            marker.searchable = false;            
+            return marker.visible(false);
+        }
+    });       
+}, viewModel);
+ko.applyBindings(viewModel);
 
 
 //var viewModel = {
@@ -176,18 +225,50 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 
-var viewModel = {
-    query: ko.observable(''),
-};
+//ar viewModel = {
+//    query: ko.observable(''),
+//};
 
-viewModel.destinations= ko.dependentObservable(function() {
-    var self = this;
-    var search = self.query().toLowerCase();
-    return ko.utils.arrayFilter(destinations, function(marker) {
+//viewModel.destinations= ko.dependentObservable(function() {
+//    var self = this;
+//    var search = self.query().toLowerCase();
+//    return ko.utils.arrayFilter(destinations, function(marker) {
 
-            return marker.visible(true);
+//            return marker.visible(true);
 
-    });       
-}, viewModel);
+//    });       
+//}, viewModel);
 
-ko.applyBindings(viewModel);
+//ko.applyBindings(viewModel);
+
+
+
+
+
+//Query through the different locations from nav bar with knockout.js
+    //only display markers and nav elements that match query result
+//var viewModel = {
+//    query: ko.observable(''),
+//};
+
+//viewModel.destinations = ko.dependentObservable(function() {
+//    var self = this;
+//    var search = self.query().toLowerCase();
+//    return ko.utils.arrayFilter(destinations, function(marker) {
+//    if (marker.title.toLowerCase().indexOf(search) >= 0) {
+//            marker.searchable = true;
+//            return marker.visible(true);
+//        } else {
+//            marker.searchable = false;
+            
+//            return marker.visible(false);
+//        }
+//    });       
+//}, viewModel);
+
+//ko.applyBindings(viewModel);
+
+        //Click nav element to view infoWindow
+            //zoom in and center location on click
+
+    
