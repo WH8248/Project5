@@ -1,3 +1,17 @@
+// check the size of the screen
+//note my full screen - 1280    ipad - 1024  iphone 5 - 320
+var screenWidth = $(window).width();
+var zoomSize;
+if (screenWidth < 500) {  // phone
+    zoomSize = 11;
+}
+else if(screenWidth > 1100){  // PC
+    zoomSize = 13;
+}
+else {
+    zoomSize=12;  // Tablet
+}
+
 // list of places in Branson Possibly move to new file in future
 var destinations = [
     {   
@@ -109,13 +123,11 @@ var destinations = [
     searchable: true
     }   
 ];
-
-
 // View map
 function initialize() {
   var mapProp = {
         center:new google.maps.LatLng(36.646402,-93.287108),
-        zoom:13,
+        zoom:zoomSize,  // was 13
         mapTypeId:google.maps.MapTypeId.ROADMAP
     };
     var map=new google.maps.Map(document.getElementById("map"), mapProp);
@@ -130,6 +142,8 @@ function initialize() {
             var marker = new google.maps.Marker({
                 position:point,
                 map: map,
+                //icon: none;
+                //icon: "img/foodPointer.png",
                 title: destinations[i].title,                
             });
                     
@@ -147,7 +161,7 @@ function initialize() {
                     infowindow.setContent(infoString);
                     infowindow.open(map,marker);
                     map.setCenter(marker.getPosition());
-                    map.setZoom(16);
+                    map.setZoom(zoomSize+3); // was 16
                 }
             })(marker,i));
             //When a destination is selected in the list the infoview opens and zooms in on the location in the map
@@ -164,7 +178,7 @@ function initialize() {
                     infowindow.setContent(infoString);
                     infowindow.open(map,marker);
                     map.setCenter(marker.getPosition());
-                    map.setZoom(16);
+                    map.setZoom(zoomSize+3);  // was 16
                 };
             })(marker,i));
         }
@@ -173,7 +187,7 @@ function initialize() {
 
     //reset the map view
     function mapReset(){
-        map.setZoom(13);
+        map.setZoom(zoomSize);  // was 13
         map.setCenter(mapProp.center);
     }
     
@@ -204,71 +218,46 @@ viewModel.destinations = ko.dependentObservable(function() {
 ko.applyBindings(viewModel);
 
 
-//var viewModel = {
-//    destinations: ko.observableArray(destinations)
-//    query: ko.observable('')
-//    search: function(value) {
-    // remove all the current beers, which removes them from the view
- //   viewModel.destinations.removeAll();
+// add either the expand or collapse button
+var screenHeight = $(window).height();
 
-//    for(var x in destinations) {
-//      if(beers[x].name.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
-//        viewModel.destinations.push(destinations[x]);
-//      }
-//    }
-//  }
-//};
+var searchVisible = true;
+function noNav() {
+    $("#search-window").animate({ // runs on collapse
+                height: 0, 
+            }, 500);           
+            setTimeout(function() {   // runs on collapse
+                $("#search-window").hide();
+            }, 500);    
+            $("#collapse").attr("src", "img/expand.png");
+            searchVisible = false;
+}
+function yesNav() {
+    $("#search-window").show();
+            var scrollerHeight = $("#scroller").height() + 55;
+            if(screenHeight < 600) {   // runs on expand iphone
+                $("#search-window").animate({
+                    height: scrollerHeight - 100,
+                }, 500, function() {
+                    $(this).css('height','auto').css("max-height", 439);
+                });   
+            } else {   // runs on expand full screen & iphone
+            $("#search-window").animate({
+                height: scrollerHeight,
+            }, 500, function() {
+                $(this).css('height','auto').css("max-height", 549);
+            });
+            }
+            $("#collapse").attr("src", "img/collapse.png");
+            searchVisible = true;
+}
 
-//ko.applyBindings(viewModel);
-//viewModel.query.subscribe(viewModel.search);
-
-
-
-
-//ar viewModel = {
-//    query: ko.observable(''),
-//};
-
-//viewModel.destinations= ko.dependentObservable(function() {
-//    var self = this;
-//    var search = self.query().toLowerCase();
-//    return ko.utils.arrayFilter(destinations, function(marker) {
-
-//            return marker.visible(true);
-
-//    });       
-//}, viewModel);
-
-//ko.applyBindings(viewModel);
-
-
-
-
-
-//Query through the different locations from nav bar with knockout.js
-    //only display markers and nav elements that match query result
-//var viewModel = {
-//    query: ko.observable(''),
-//};
-
-//viewModel.destinations = ko.dependentObservable(function() {
-//    var self = this;
-//    var search = self.query().toLowerCase();
-//    return ko.utils.arrayFilter(destinations, function(marker) {
-//    if (marker.title.toLowerCase().indexOf(search) >= 0) {
-//            marker.searchable = true;
-//            return marker.visible(true);
-//        } else {
-//            marker.searchable = false;
+function hideNav() {
+    if(searchVisible === true) {  //runs on collapse
+            noNav(); 
             
-//            return marker.visible(false);
-//        }
-//    });       
-//}, viewModel);
-
-//ko.applyBindings(viewModel);
-
-        //Click nav element to view infoWindow
-            //zoom in and center location on click
-
-    
+    } else {   //runs on expand
+            yesNav();  
+    }
+}
+$("#collapse").click(hideNav);  //runs on load

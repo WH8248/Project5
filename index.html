@@ -6,6 +6,7 @@
     <title>Branson MO Map Project</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <!--<link rel="stylesheet" media="(max-width: 670px)" href="css/responsive.css">-->
 </head>
 <body>
@@ -45,65 +46,17 @@
       </script>   
     </div>
   </div>
+ 
   <div class="reset-container">
-    <button id="reset">Reset Map Zoom</button>
+    <button id="reset">Reset Map</button>
+    <button type="submit"><img id="collapse" src="img/collapse.png" alt="collapse image"></button>
   </div>
 
-  <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
   <script type="text/javascript" src="js/lib/knockout-3.3.0.js"></script>
   <script type="text/javascript" src="js/script.js"></script>  
+  <!--<script type="text/javascript" src="js/destinations.js"></script>-->
 
 </body>
 </html>
 
-
-
-<!--
-
-  <div id="map"> </div>
-  <div class="destinations-container" >
-    <div id="search-window">    
-      <input id="search" placeholder="Search…" type="input" data-bind="textInput: query, valueUpdate: 'keydown'" autocomplete="off"></input>
-      <div id="scroller">
-        <ul data-bind="template: {name: 'marker', foreach:destinations}">
-        </ul>
-      </div>
-      <script type="text/html" id="marker">
-        <div data-bind="visible: visible">
-          <a href="#" data-bind="attr: {id: id}">
-            <li>
-              <strong data-bind="text: title"></strong>
-              <p data-bind="text: streetAddress"></p>
-              <p data-bind="text: cityAddress"></p> 
-            </li>
-          </a>
-        </div>
-      </script>   
-    </div>
-  </div>
-  <div class="reset-container">
-    <button id="reset">Reset Map Zoom</button>
-  </div>
-
-
-
-
-  <div id="map"> </div>
-  <div class="destinations-container" >
-    <div id="search-window">    
-      <input id="search" placeholder="search…" type="search" data-bind="value: query, valueUpdate:'keyup'" autocomplete="off"></input>
-      <div id="scroller"></div>
-        <ul data-bind="template: {name: 'destination', foreach:destinations}"></ul>
-      
-      <script type="text/html" id="destination">
-
-
-            <li>
-              <strong data-bind="text: title"></strong>
-              <span data-bind="text: streetAddress"></span>
-              <span data-bind="text: cityAddress"></span> 
-            </li>
-
-      </script> 
--->
