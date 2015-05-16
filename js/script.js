@@ -123,7 +123,7 @@ var destinations = [
     searchable: true
     }   
 ];
-// View map
+// View map Google Map API
 function initialize() {
   var mapProp = {
         center:new google.maps.LatLng(36.646402,-93.287108),
@@ -144,11 +144,9 @@ function initialize() {
                 map: map,
                 //icon: none;
                 //icon: "img/foodPointer.png",
-                title: destinations[i].title,                
-            });
-                    
-            
-            //When a marker is clicked the infoview opens and zooms in on the location in the map
+                title: destinations[i].title, 
+            });               
+            //When a marker is clicked the infoview opens and zooms in on the location in the map and uses Google Map View API
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function(){
 
@@ -162,9 +160,10 @@ function initialize() {
                     infowindow.open(map,marker);
                     map.setCenter(marker.getPosition());
                     map.setZoom(zoomSize+3); // was 16
-                }
+                };
             })(marker,i));
-            //When a destination is selected in the list the infoview opens and zooms in on the location in the map
+                
+            //When a destination is selected in the list the infoview opens and zooms in on the location in the map and uses Google Map View API
             var searchList = $('#nav' + i);
             searchList.click((function(marker,i){
                 return function() {
@@ -220,8 +219,9 @@ ko.applyBindings(viewModel);
 
 // add either the expand or collapse button
 var screenHeight = $(window).height();
-
 var searchVisible = true;
+
+
 function noNav() {
     $("#search-window").animate({ // runs on collapse
                 height: 0, 
@@ -253,7 +253,7 @@ function yesNav() {
 }
 
 function hideNav() {
-    if(searchVisible === true) {  //runs on collapse
+    if(searchVisible == true) {  //runs on collapse
             noNav(); 
             
     } else {   //runs on expand
@@ -261,3 +261,24 @@ function hideNav() {
     }
 }
 $("#collapse").click(hideNav);  //runs on load
+
+//Get Weather info
+// Docs at http://simpleweatherjs.com
+$(document).ready(function() {
+  $.simpleWeather({
+    location: 'Branson, MO',
+    woeid: '',
+    unit: 'f',
+    success: function(weather) {
+      html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.temp+'&deg;'+weather.units.temp+'</h2>';
+      //html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
+      //html += '<li class="currently">'+weather.currently+'</li>';
+      //html += '<li>'+weather.wind.direction+' '+weather.wind.speed+' '+weather.units.speed+'</li></ul>';
+  
+      $("#weather").html(html);
+    },
+    error: function(error) {
+      $("#weather").html('<p>'+error+'</p>');
+    }
+  });
+});
