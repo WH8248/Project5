@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Branson MO Map Project</title>
+    <title>Branson MO Map Project 5</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <!--<link rel="stylesheet" media="(max-width: 670px)" href="css/responsive.css">-->
 </head>
 <body>
-
-  <div id="map"> </div>
-  <div class="destinations-container" >
+  <div id="map"></div>
+  <div class="destinations-container">
     <div id="search-window">    
       <input id="search" placeholder="search…" type="input" data-bind="textInput: query, valueUpdate: 'keydown'" autocomplete="off"></input>
       <div id="scroller">
@@ -30,25 +28,19 @@
           </a>
         </div>
       </script>
-
     </div>
     <button type="submit"><img id="collapse" src="img/collapse.png" alt="collapse image"></button>
-    <button id="reset">Reset Map</button> 
-
   </div>
-
+  <div class="reset-container">
+    <button id="reset">Reset Map</button> 
+  </div>
   <div class="weather-container">
     <div id="weather"></div>
-  </div>
- 
-
+  </div>  
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
   <script type="text/javascript" src="js/lib/knockout-3.3.0.js"></script>
+  <script type="text/javascript" src="js/destinations.js"></script>
   <script type="text/javascript" src="js/script.js"></script>  
-  
-  <script type="text/javascript" src="simpleWeather/jquery.simpleWeather.min.js"></script>
-  <!--<script type="text/javascript" src="js/destinations.js"></script>-->
-
+  <script type="text/javascript" src="simpleWeather/jquery.simpleWeather.min.js"></script>  
 </body>
 </html>
-

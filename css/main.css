@@ -46,7 +46,7 @@ a {
     overflow: hidden;
     width: 220px;
     /*height:300px;*/
-    max-height: auto;
+    max-height: 450px;
     background-color: white;
     border: 5px solid gray;
     font-size: 10px;   
@@ -63,7 +63,7 @@ a {
 }
 
 #scroller {
-    max-height: 480px; 
+    max-height: 450px; 
     overflow: scroll;
     margin: 0 5px;
 }
@@ -81,8 +81,8 @@ a {
 #reset:focus {
     height: 50px;
     width: 50px;
-    /*float: right;
-    bottom margin: 0px;*/
+    float: right;
+    bottom margin: 0px;
     border-radius: 50%;
     background-color: black;
     font-size: 10px;
@@ -181,3 +181,16 @@ i {
 .icon-46:before { content: "U"; }
 .icon-47:before { content: "S"; }
 
+
+
+@media screen and (max-width:350px){
+    .weather-container{
+        display:none;
+    }
+}
+
+@media screen and (max-height:470px){
+    .destinations-container{
+        display:none;
+    }
+}
