@@ -9,6 +9,11 @@ http://simpleweatherjs.com/
 http://www.w3schools.com/cssref/css3_pr_mediaquery.asp
 Examples from Git Hub
 
+
+To run the app please download the zip files avalilbe at the URL below to your local and open the index.html:
+https://github.com/WH8248/Project5
+
+
 This is a Map of Branson MO and several destinations
 When the Map opens 
 	drops markers of the destinations

@@ -1,14 +1,18 @@
 // check the size of the screen
+
 var screenWidth = $(window).width();
 var zoomSize;
 if (screenWidth < 500) {  // phone
+    "use strict";
     zoomSize = 11;
 }
 else if(screenWidth > 1100){  // PC
+    "use strict";
     zoomSize = 13;
 }
 else {
-    zoomSize=12;  // Tablet
+    "use strict";
+    zoomSize = 12;  // Tablet
 }
 // View map Google Map API
 function initialize() {
@@ -36,9 +40,11 @@ function initialize() {
                 return function(){
                     var googlePicUrl = '<img src="https://maps.googleapis.com/maps/api/streetview?size=300x150&location=';
                     var headingPitch = '&heading='+destinations[i].heading+'&pitch=5';
-                    var googlePic = googlePicUrl+destinations[i].lat+','+destinations[i].lng+headingPitch+'"alt="Google Pic of'+destinations[i].title+'"><br>';
-                    var infoString =  '<p>'+googlePic+'</p>'+'<strong>'+destinations[i].title+'</strong>'+'<br>'+destinations[i].streetAddress+'<br>'+
-                    destinations[i].cityAddress+'<br><a href="http://'+destinations[i].url+'"target="_blank">'+destinations[i].url+'</a>';
+                    var googlePic = googlePicUrl+destinations[i].lat+','+destinations[i].lng+headingPitch+
+                    '"alt="Google Pic of'+destinations[i].title+'"><br>';
+                    var infoString =  '<p>'+googlePic+'</p>'+'<strong>'+destinations[i].title+'</strong>'+'<br>'+
+                    destinations[i].streetAddress+'<br>'+destinations[i].cityAddress+'<br><a href="http://'+
+                    destinations[i].url+'"target="_blank">'+destinations[i].url+'</a>';
                     
                     infowindow.setContent(infoString);
                     infowindow.open(map,marker);
@@ -54,9 +60,11 @@ function initialize() {
 
                     var googlePicUrl = '<img src="https://maps.googleapis.com/maps/api/streetview?size=300x150&location=';
                     var headingPitch = '&heading='+destinations[i].heading+'&pitch=5';
-                    var googlePic = googlePicUrl+destinations[i].lat+','+destinations[i].lng+headingPitch+'"alt="Google Pic of'+destinations[i].title+'"><br>';
-                    var infoString =  '<p>'+googlePic+'</p>'+'<strong>'+destinations[i].title+'</strong>'+'<br>'+destinations[i].streetAddress+'<br>'+
-                    destinations[i].cityAddress+'<br><a href="http://'+destinations[i].url+'"target="_blank">'+destinations[i].url+'</a>';
+                    var googlePic = googlePicUrl+destinations[i].lat+','+destinations[i].lng+headingPitch+
+                    '"alt="Google Pic of'+destinations[i].title+'"><br>';
+                    var infoString =  '<p>'+googlePic+'</p>'+'<strong>'+destinations[i].title+'</strong>'+'<br>'+
+                    destinations[i].streetAddress+'<br>'+destinations[i].cityAddress+'<br><a href="http://'+
+                    destinations[i].url+'"target="_blank">'+destinations[i].url+'</a>';
 
                     infowindow.setContent(infoString);
                     infowindow.open(map,marker);
@@ -124,7 +132,7 @@ function yesSearch() {
 }
 // runs the expand or collapse function 
 function hideSearch() {
-    if(searchVisible == true) {
+    if(searchVisible === true) {
         noSearch();             
     } else { 
         yesSearch();  
@@ -133,7 +141,7 @@ function hideSearch() {
 $("#collapse").click(hideSearch);  //runs on load
 
 
-//Get Weather info, commented out some of the information bc it looked better with only the temp and icon
+//Get Weather info
 $(document).ready(function() {
     $.simpleWeather({
     location: 'Branson, MO',
@@ -141,9 +149,6 @@ $(document).ready(function() {
     unit: 'f',
     success: function(weather) {
         html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.temp+'&deg;'+weather.units.temp+'</h2>';
-        //html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
-        //html += '<li class="currently">'+weather.currently+'</li>';
-        //html += '<li>'+weather.wind.direction+' '+weather.wind.speed+' '+weather.units.speed+'</li></ul>';  
         $("#weather").html(html);
         },
         error: function(error) {
