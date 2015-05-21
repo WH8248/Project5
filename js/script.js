@@ -88,7 +88,6 @@ function initialize() {
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 
-
 var viewModel = {
     query: ko.observable(''),
 };
@@ -107,7 +106,6 @@ viewModel.destinations = ko.dependentObservable(function() {
     });       
 }, viewModel);
 ko.applyBindings(viewModel);
-
 
 var searchVisible = true;
 //Hides the search window if collapse icon is clicked
